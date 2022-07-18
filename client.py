@@ -10,10 +10,10 @@ if len(sys.argv) < 3:
     quit()
 
 rendezvous_ip = sys.argv[1]
-player_number = int(sys.argv[2])
+host_name = sys.argv[2]
 
-print('starting connection protocol for player {} using rendezvous IP {}'.format(
-    player_number, rendezvous_ip
+print('starting connection protocol using rendezvous IP {}, host name {}'.format(
+    rendezvous_ip, host_name
 ))
 
 rendezvous = (rendezvous_ip, 55555)
@@ -23,7 +23,8 @@ print('connecting to rendezvous server')
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(('0.0.0.0', 50001))
-sock.sendto(b'0', rendezvous)
+# sock.sendto(b'0', rendezvous)
+sock.sendto(host_name.encode(), rendezvous)
 
 while True:
     if keyboard.read_key() == "q":
@@ -78,7 +79,7 @@ print('ready to exchange messages\n')
     # msg = input('> ')
     # sock.sendto(msg.encode(), (ip, sport))
 
-if player_number == 1:
-    subprocess.run(['hello_tetra.exe', '--local-port', '{}'.format(sport), '--players', 'localhost', '{}:{}'.format(ip, dport)])
-else:
-    subprocess.run(['hello_tetra.exe', '--local-port', '{}'.format(dport), '--players', '{}:{}'.format(ip, sport), 'localhost'])
+# if player_number == 1:
+    # subprocess.run(['hello_tetra.exe', '--local-port', '{}'.format(sport), '--players', 'localhost', '{}:{}'.format(ip, dport)])
+# else:
+    # subprocess.run(['hello_tetra.exe', '--local-port', '{}'.format(dport), '--players', '{}:{}'.format(ip, sport), 'localhost'])

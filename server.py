@@ -2,6 +2,8 @@ import socket
 import keyboard
 import sys
 
+print('starting server')
+
 known_port = 50002
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -16,6 +18,7 @@ while True:
         data, address = sock.recvfrom(128)
 
         print('connection from: {}'.format(address))
+        print('host name is: {}'.format(data.decode()))
         clients.append(address)
 
         sock.sendto(b'ready', address)
