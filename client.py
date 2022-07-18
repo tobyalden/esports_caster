@@ -24,13 +24,17 @@ print('connecting to rendezvous server')
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(('0.0.0.0', 50001))
 # sock.sendto(b'0', rendezvous)
+sock.settimeout(1)
 sock.sendto(host_name.encode(), rendezvous)
 
 while True:
     if keyboard.is_pressed("q"):
         sys.exit()
 
-    data = sock.recv(1024).decode()
+    try:
+        data = sock.recv(1024).decode()
+    except socket.timeout:
+        continue
 
     if data.strip() == 'ready':
         print('checked in with server, waiting')

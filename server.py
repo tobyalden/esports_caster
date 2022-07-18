@@ -8,14 +8,16 @@ known_port = 50002
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(('0.0.0.0', 55555))
+sock.settimeout(1)
 
 while True:
     clients = []
 
     while True:
-        if keyboard.is_pressed("q"):
-            sys.exit()
-        data, address = sock.recvfrom(128)
+        try:
+            data, address = sock.recvfrom(128)
+        except socket.timeout:
+            continue
 
         print('connection from: {}'.format(address))
         print('host name is: {}'.format(data.decode()))
