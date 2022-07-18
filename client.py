@@ -2,6 +2,8 @@ import subprocess
 import socket
 import sys
 import threading
+import signal
+import keyboard
 
 if len(sys.argv) < 3:
     print('not enough arguments. Expected IP of rendezvous server and player number.')
@@ -24,6 +26,9 @@ sock.bind(('0.0.0.0', 50001))
 sock.sendto(b'0', rendezvous)
 
 while True:
+    if keyboard.read_key() == "q":
+        sys.exit()
+
     data = sock.recv(1024).decode()
 
     if data.strip() == 'ready':

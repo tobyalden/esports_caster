@@ -1,4 +1,6 @@
 import socket
+import keyboard
+import sys
 
 known_port = 50002
 
@@ -9,6 +11,8 @@ while True:
     clients = []
 
     while True:
+        if keyboard.read_key() == "q":
+            sys.exit()
         data, address = sock.recvfrom(128)
 
         print('connection from: {}'.format(address))
