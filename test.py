@@ -1,4 +1,74 @@
 import PySimpleGUI as sg
+import subprocess
+import socket
+import sys
+import threading
+import signal
+
+rendezvous_ip = "10.0.0.48"
+
+def connect(window, host_name):
+    print('starting connection protocol using rendezvous IP {}, host name {}'.format(
+        rendezvous_ip, host_name
+    ))
+
+    rendezvous = (rendezvous_ip, 55555)
+
+    # connect to rendezvous
+    print('connecting to rendezvous server')
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(('0.0.0.0', 50001))
+    # sock.sendto(b'0', rendezvous)
+    sock.settimeout(1)
+    sock.sendto(host_name.encode(), rendezvous)
+
+    while True:
+        event, values = window.read(100)
+        if event == sg.WIN_CLOSED: # if user closes window or clicks cancel
+            window.close()
+            sys.exit()
+
+        try:
+            data = sock.recv(1024).decode()
+        except socket.timeout:
+            continue
+
+        if data.strip() == 'ready':
+            print('checked in with server, waiting')
+            break
+
+    while True:
+        event, values = window.read(100)
+        if event == sg.WIN_CLOSED: # if user closes window or clicks cancel
+            window.close()
+            sys.exit()
+
+        try:
+            data = sock.recv(1024).decode()
+            break
+        except socket.timeout:
+            continue
+
+    ip, sport, dport = data.split(' ')
+    sport = int(sport)
+    dport = int(dport)
+
+    print('\ngot peer')
+    print('  ip:          {}'.format(ip))
+    print('  source port: {}'.format(sport))
+    print('  dest port:   {}\n'.format(dport))
+
+    # punch hole
+    # equiv: echo 'punch hole' | nc -u -p 50001 x.x.x.x 50002
+    print('punching hole')
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(('0.0.0.0', sport))
+    sock.sendto(b'0', (ip, dport))
+    sock.close()
+
+    print('ready to exchange messages\n')
 
 sg.theme('DarkAmber')   # Add a touch of color
 # All the stuff inside your window.
@@ -14,6 +84,7 @@ while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED: # if user closes window or clicks cancel
         break
-    print('You entered', values[0])
+    # print('You entered', values[0])
+    connect(window, values[0])
 
 window.close()

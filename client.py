@@ -3,7 +3,6 @@ import socket
 import sys
 import threading
 import signal
-import keyboard
 
 if len(sys.argv) < 3:
     print('not enough arguments. Expected IP of rendezvous server and player number.')
