@@ -13,7 +13,7 @@ while True:
     clients = []
 
     while True:
-        if keyboard.read_key() == "q":
+        if keyboard.is_pressed("q"):
             sys.exit()
         data, address = sock.recvfrom(128)
 

@@ -27,7 +27,7 @@ sock.bind(('0.0.0.0', 50001))
 sock.sendto(host_name.encode(), rendezvous)
 
 while True:
-    if keyboard.read_key() == "q":
+    if keyboard.is_pressed("q"):
         sys.exit()
 
     data = sock.recv(1024).decode()
