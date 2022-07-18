@@ -40,7 +40,12 @@ while True:
         print('checked in with server, waiting')
         break
 
-data = sock.recv(1024).decode()
+while True:
+    try:
+        data = sock.recv(1024).decode()
+        break
+    except socket.timeout:
+        continue
 ip, sport, dport = data.split(' ')
 sport = int(sport)
 dport = int(dport)
