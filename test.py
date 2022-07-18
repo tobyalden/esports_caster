@@ -63,6 +63,8 @@ def connect(window, host_name):
     # equiv: echo 'punch hole' | nc -u -p 50001 x.x.x.x 50002
     print('punching hole')
 
+    sock.close()
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(('0.0.0.0', sport))
     sock.sendto(b'0', (ip, dport))
