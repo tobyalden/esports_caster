@@ -73,7 +73,7 @@ def connect(window, host_name):
 
     print('ready to exchange messages\n')
 
-    if player_number == "1":
+    if player_num == "1":
         subprocess.run(['hello_tetra.exe', '--local-port', '{}'.format(sport), '--players', 'localhost', '{}:{}'.format(ip, dport)])
     else:
         subprocess.run(['hello_tetra.exe', '--local-port', '{}'.format(dport), '--players', '{}:{}'.format(ip, sport), 'localhost'])
