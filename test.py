@@ -50,7 +50,7 @@ def connect(window, host_name):
         except socket.timeout:
             continue
 
-    ip, sport, dport = data.split(' ')
+    ip, sport, dport, player_num = data.split(' ')
     sport = int(sport)
     dport = int(dport)
 
@@ -58,6 +58,7 @@ def connect(window, host_name):
     print('  ip:          {}'.format(ip))
     print('  source port: {}'.format(sport))
     print('  dest port:   {}\n'.format(dport))
+    print('  player num:   {}\n'.format(player_num))
 
     # punch hole
     # equiv: echo 'punch hole' | nc -u -p 50001 x.x.x.x 50002

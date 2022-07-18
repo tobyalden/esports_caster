@@ -39,5 +39,5 @@ while True:
             c2 = clients[host_name].pop()
             c2_addr, c2_port = c2
 
-            sock.sendto('{} {} {}'.format(c1_addr, c1_port, known_port).encode(), c2)
-            sock.sendto('{} {} {}'.format(c2_addr, c2_port, known_port).encode(), c1)
+            sock.sendto('{} {} {} {}'.format(c1_addr, c1_port, known_port, 1).encode(), c2)
+            sock.sendto('{} {} {} {}'.format(c2_addr, c2_port, known_port, 2).encode(), c1)
