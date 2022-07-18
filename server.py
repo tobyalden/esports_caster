@@ -34,7 +34,7 @@ while True:
             break
 
     for host_name in clients:
-        if len(clients[host_name] == 2):
+        if len(clients[host_name]) == 2:
             c1 = clients[host_name].pop()
             c1_addr, c1_port = c1
             c2 = clients[host_name].pop()
