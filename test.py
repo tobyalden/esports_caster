@@ -74,8 +74,10 @@ def connect(window, host_name):
     print('ready to exchange messages\n')
 
     if player_num == "1":
+        print('starting as player 1')
         subprocess.run(['esport_heaven_online.exe', '--local-port', '{}'.format(sport), '--players', 'localhost', '{}:{}'.format(ip, dport)])
     else:
+        print('starting as player 2')
         subprocess.run(['esport_heaven_online.exe', '--local-port', '{}'.format(dport), '--players', '{}:{}'.format(ip, sport), 'localhost'])
 
 sg.theme('DarkAmber')   # Add a touch of color
