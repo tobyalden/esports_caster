@@ -1,5 +1,4 @@
 import socket
-import keyboard
 import sys
 
 print('starting server')
