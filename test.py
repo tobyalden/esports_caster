@@ -5,7 +5,7 @@ import sys
 import threading
 import signal
 
-rendezvous_ip = "10.0.0.48"
+rendezvous_ip = "45.33.109.87"
 
 def connect(window, host_name):
     print('starting connection protocol using rendezvous IP {}, host name {}'.format(
