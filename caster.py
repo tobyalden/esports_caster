@@ -4,6 +4,10 @@ import socket
 import sys
 import threading
 import signal
+import textwrap
+import string
+import random
+import pyperclip
 
 rendezvous_ip = "45.33.109.87"
 
@@ -80,21 +84,40 @@ def connect(window, host_name):
         print('starting as player 2')
         subprocess.run(['esport_heaven_online.exe', '--local-port', '{}'.format(dport), '--players', '{}:{}'.format(ip, sport), 'localhost'])
 
-sg.theme('DarkAmber')   # Add a touch of color
+# sg.theme('Default')   # Add a touch of color
 # All the stuff inside your window.
-layout = [  [sg.Text('Enter passphrase to host or join game')],
-            # [sg.Text('Enter something on Row 2'), sg.InputText()],
-            [sg.InputText()],
-            [sg.Button('Connect') ]]
+text = "\n".join(textwrap.wrap('Enter a code and press Join to join a player already hosting, or press Host to recieve a code and begin hosting', 40))
+layout = [
+            [sg.Text('Code:'), sg.InputText(key='_TEXTBOX_', disabled=False)],
+            [sg.Button('Join', key='_JOIN_'), sg.Button('Host', key='_HOST_')],
+            [sg.Text(text, key='_TEXT_')],
+        ]
 
 # Create the Window
-window = sg.Window('esports caster v0.01', layout)
+window = sg.Window('SpellCaster v0.01', layout, size=(300, 200))
 # Event Loop to process "events" and get the "values" of the inputs
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED: # if user closes window or clicks cancel
         break
-    # print('You entered', values[0])
-    connect(window, values[0])
+    if event == '_HOST_':
+        code = ''.join(random.choices(string.ascii_letters, k=8))
+        window['_TEXTBOX_'].Update(code)
+        window['_TEXTBOX_'].Update(disabled = True)
+        window['_JOIN_'].Update(disabled = True)
+        window['_HOST_'].Update(disabled = True)
+        window['_TEXT_'].Update("Hosting... Code copied to clipboard.")
+        pyperclip.copy(code)
+        print('Hosting with code', code)
+        # connect(window, values[0])
+    if event == '_JOIN_':
+        if len(values['_TEXTBOX_']) != 8:
+            window['_TEXT_'].Update("Invalid code!\nPlease double check what the host sent you.")
+        else:
+            window['_TEXT_'].Update("Joining with code " + values['_TEXTBOX_'])
+            window['_JOIN_'].Update(disabled = True)
+            window['_HOST_'].Update(disabled = True)
+            print('Joining using code', values['_TEXTBOX_'])
+        # connect(window, values[0])
 
 window.close()
