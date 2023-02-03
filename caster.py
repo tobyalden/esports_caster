@@ -109,15 +109,16 @@ while True:
         window['_TEXT_'].Update("Hosting... Code copied to clipboard.")
         pyperclip.copy(code)
         print('Hosting with code', code)
-        # connect(window, values[0])
+        connect(window, code)
     if event == '_JOIN_':
         if len(values['_TEXTBOX_']) != 8:
             window['_TEXT_'].Update("Invalid code!\nPlease double check what the host sent you.")
         else:
-            window['_TEXT_'].Update("Joining with code " + values['_TEXTBOX_'])
+            code = values['_TEXTBOX_']
+            window['_TEXT_'].Update("Joining with code " + code)
             window['_JOIN_'].Update(disabled = True)
             window['_HOST_'].Update(disabled = True)
-            print('Joining using code', values['_TEXTBOX_'])
-        # connect(window, values[0])
+            print('Joining using code', code)
+            connect(window, code)
 
 window.close()
